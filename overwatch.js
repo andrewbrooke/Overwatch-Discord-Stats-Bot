@@ -5,10 +5,10 @@ const apiBaseUrl = 'https://api.lootbox.eu/';
 const apiType = 'competitive-play/allHeroes/';
 
 const platformOptions = ['pc', 'xbl', 'psn'];
-let platform = platformOptions[0];
+let platform;
 
 const regionOptions = ['us', 'eu', 'kr', 'cn', 'global'];
-let region = regionOptions[0];
+let region;
 
 let buildAPIUrl = (battleTag) => {
   return apiBaseUrl + platform + '/' + region + '/' + battleTag + '/' + apiType;
@@ -19,6 +19,8 @@ module.exports = (message, callback) => {
   let msgParts = message.split(' ');
   
   let battleTag = null;
+  platform = platformOptions[0];
+  region = regionOptions[0];
   
   // Part user's options
   msgParts.forEach( (item) => {

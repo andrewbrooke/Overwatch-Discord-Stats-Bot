@@ -19,28 +19,31 @@ bot.on('message', message => {
   // Don't reply to bot messages
   if(message.author.bot) return; 
   
-  let helpTrigger = '!help';
+  let helpTrigger = '!stats-help';
+  let statsTrigger = 'stats';
   if (message.content.startsWith(helpTrigger)) {
     showHelp(message);
-  } else if (message.content.indexOf('#') > -1) {
-    // User sends their BattleTag, send them back some stats
-    OverwatchAPI(message.content, (err, data) => {
-      if (err) {
-        message.reply(data);
-        return console.error(err + ': ' + data);
-      }
+  } else if (message.content.indexOf(statsTrigger) > -1)  {
+    if (message.content.indexOf('#') > -1) {
+      // User sends their BattleTag, send them back some stats
+      OverwatchAPI(message.content, (err, data) => {
+        if (err) {
+          message.reply(data);
+          return console.error(err + ': ' + data);
+        }
 
-      message.reply(data);
-    });
-  } else {
-    // Unknown command
-    message.reply('Unknown command, type !help for help')
+        message.reply(data);
+      });
+    } else {
+      // Unknown command
+      message.reply('Unknown command, type !stats-help for help')
+    }
   }
 });
 
 bot.login(token);
 
 let showHelp = (message) => {
-  const helpText = '!help \n This bot will retrieve your competitive mode statistics \n Enter your Battle.net BattleTag to receive your Overwatch stats \n Ex: User#1234 \n\n Default options: \n Region: US \n Platform: PC \n Mode: Quick Play \n To change these options, append your message with the following options \n\n Platform: platform=[platform] \n Options: pc, xbl, psn \n\n Region: region=[region] \n Options: us, eu, kr, cn, global \n\n\n A full request might look like this: User#1234 platform=pc region=eu';
+  const helpText = '!stats-help \n This bot will retrieve your Overwatch competitive mode statistics \n Enter "stats" and your Battle.net BattleTag to receive your stats \n Ex: stats User#1234 \n\n Default options: \n Region: US \n Platform: PC \n Mode: Quick Play \n To change these options, append your message with the following options \n\n Platform: platform=[platform] \n Options: pc, xbl, psn \n\n Region: region=[region] \n Options: us, eu, kr, cn, global \n\n\n A full request might look like this: stats User#1234 platform=pc region=eu';
   message.reply(helpText);
 };
