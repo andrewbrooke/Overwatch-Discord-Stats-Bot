@@ -1,0 +1,15 @@
+{
+  "name": "Overwatch-Discord-Stats-Bot",
+  "version": "0.0.1",
+  "license": "MIT",
+  "description": "A Discord bot that sends user's their stats for Overwatch competitive mode",
+  "author": "Andrew Brooke <andrewbrooke15@gmail.com>",
+  "repository" : {
+    "type" : "git",
+    "url" : "https://github.com/andrewbrooke/Overwatch-Discord-Stats-Bot.git"
+  },
+  "dependencies": {
+    "discord.js": "^9.3.0",
+    "request": "^2.75.0"
+  }
+}
