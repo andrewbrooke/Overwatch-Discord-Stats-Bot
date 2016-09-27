@@ -41,6 +41,6 @@ bot.on('message', message => {
 bot.login(token);
 
 let showHelp = (message) => {
-  const helpText = '\n This bot will retrieve your Overwatch competitive mode statistics \n Enter "!stats" and your Battle.net BattleTag to receive your stats \n Ex: stats User#1234 \n\n Default options: Region: us, Platform: pc \n To change these options, append your message with the following options \n\n Platform: platform=[platform] \n Options: pc, xbl, psn \n\n Region: region=[region] \n Options: us, eu, kr, cn, global \n\n\n A full request might look like this: !stats User#1234 platform=pc region=eu';
+  const helpText = '\n This bot will retrieve your Overwatch statistics \n Enter "!stats" and your Battle.net BattleTag to receive your stats \n Ex: stats User#1234 \n\n Default options: Region: us, Platform: pc \n To change these options, append your message with the following options \n\n Platform: platform=[platform] \n Options: pc, xbl, psn \n\n Region: region=[region] \n Options: us, eu, kr, cn, global \n\n\n A full request might look like this: !stats User#1234 platform=pc region=eu';
   message.reply(helpText);
 };

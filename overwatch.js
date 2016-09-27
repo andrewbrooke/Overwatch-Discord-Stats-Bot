@@ -2,7 +2,7 @@ const https = require('https');
 const request = require('request');
 
 const apiBaseUrl = 'https://api.lootbox.eu/';
-const apiType = 'competitive-play/allHeroes/';
+const apiType = 'profile';
 
 const platformOptions = ['pc', 'xbl', 'psn'];
 let platform;
@@ -50,35 +50,27 @@ module.exports = (message, callback) => {
     if (!error && response.statusCode == 200) {
       // For API errors, send back the error to the user
       let statsJSON = JSON.parse(body);
-
       if (statsJSON.statusCode == 404)
         return callback('API Error: ' + statsJSON.statusCode + ' - ' + statsJSON.error, statsJSON.error);
       
       // Stats were returned okay, let's parse them
-      let stats = {
-        totalGames: {
-          display: 'Total Games Played',
-          value: statsJSON.GamesPlayed
-        },
-        timePlayed: {
-          display: 'Time Played',
-          value: statsJSON.TimePlayed
-        },
-        record: {
-          display: 'Record',
-          value: statsJSON.GamesWon + ' wins, ' + statsJSON.GamesLost + ' losses, ' + statsJSON.GamesTied + ' ties'
-        },
-        winrate: {
-          display: 'Winrate',
-          value: (statsJSON.GamesWon / statsJSON.GamesPlayed * 100).toFixed(2) + '%'
-        }
-      };
+      let stats = statsJSON.data;
+      let statLevel = stats.level;
+      let statCompRank = stats.competitive.rank;
+      let statCompRecord = stats.games.competitive.wins + 'W ' + stats.games.competitive.lost + 'L';
+      let statCompWinrate = (stats.games.competitive.wins / stats.games.competitive.played * 100).toFixed(2) + '%';
+      let statCompTime = stats.playtime.competitive;
+      let statQuickWins = stats.games.quick.wins;
+      let statQuickTime = stats.playtime.quick;
       
-      let statsString = 'here is a summary of your statistics: \n\n';
-      for (key in stats) {
-        statsString += stats[key].display + ': ' + stats[key].value + '\n';
-      }
-
+      // Format the string we are going to return to the user
+      let statsString = '';
+      statsString += '**' + stats.username + '**\n';
+      statsString += 'Level: ' + statLevel + ' | Competitive Rank: ' + statCompRank + '\n';
+      statsString += 'Competitive Record: **' + statCompRecord + '** | *' + statCompWinrate + '* winrate\n';
+      statsString += '**' + statQuickWins + '** Quick Play wins\n';
+      statsString += '**' + statCompTime + '** Competitive | ' + '**' + statQuickTime + '** Quick Play'
+      
       return callback(null, statsString);
     } else {
       return callback(error, null);

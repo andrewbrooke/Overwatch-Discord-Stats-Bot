@@ -1,6 +1,6 @@
 # Overwatch-Discord-Stats-Bot
 
-This is a Discord Bot built using DiscordJS. It retrieves a user's competitive statistics for Overwatch and returns them in a Discord server.
+This is a Discord Bot built using DiscordJS. It retrieves a user's statistics for Overwatch and returns them in a Discord server.
 
 Since I am not hosting this bot anywhere, you will need to set up your own application on discord to add it to your own server.
 
