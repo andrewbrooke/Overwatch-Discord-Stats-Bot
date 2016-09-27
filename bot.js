@@ -19,11 +19,8 @@ bot.on('message', message => {
   // Don't reply to bot messages
   if(message.author.bot) return; 
   
-  let helpTrigger = '!stats-help';
-  let statsTrigger = 'stats';
-  if (message.content.startsWith(helpTrigger)) {
-    showHelp(message);
-  } else if (message.content.indexOf(statsTrigger) > -1)  {
+  let statsTrigger = '!stats';
+  if (message.content.startsWith(statsTrigger)) {
     if (message.content.indexOf('#') > -1) {
       // User sends their BattleTag, send them back some stats
       OverwatchAPI(message.content, (err, data) => {
@@ -35,8 +32,8 @@ bot.on('message', message => {
         message.reply(data);
       });
     } else {
-      // Unknown command
-      message.reply('Unknown command, type !stats-help for help')
+      // Not a recognized command, show help
+      showHelp(message);
     }
   }
 });
@@ -44,6 +41,6 @@ bot.on('message', message => {
 bot.login(token);
 
 let showHelp = (message) => {
-  const helpText = '!stats-help \n This bot will retrieve your Overwatch competitive mode statistics \n Enter "stats" and your Battle.net BattleTag to receive your stats \n Ex: stats User#1234 \n\n Default options: \n Region: US \n Platform: PC \n Mode: Quick Play \n To change these options, append your message with the following options \n\n Platform: platform=[platform] \n Options: pc, xbl, psn \n\n Region: region=[region] \n Options: us, eu, kr, cn, global \n\n\n A full request might look like this: stats User#1234 platform=pc region=eu';
+  const helpText = '\n This bot will retrieve your Overwatch competitive mode statistics \n Enter "!stats" and your Battle.net BattleTag to receive your stats \n Ex: stats User#1234 \n\n Default options: Region: US, Platform: PC, Mode: Quick Play \n To change these options, append your message with the following options \n\n Platform: platform=[platform] \n Options: pc, xbl, psn \n\n Region: region=[region] \n Options: us, eu, kr, cn, global \n\n\n A full request might look like this: !stats User#1234 platform=pc region=eu';
   message.reply(helpText);
 };

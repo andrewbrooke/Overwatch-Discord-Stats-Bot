@@ -20,6 +20,6 @@ You can add your own application for Discord here: https://discordapp.com/develo
 
 Now, join the Discord server that you assigned the bot to, and you're ready to go.
 
-To retrieve your stats, send the following message `stats YourBattleTag#1234`
+To retrieve your stats, send the following message `!stats YourBattleTag#1234`
 
-Additional help can be found by sending the message `!stats-help`
+Usage can be shown by simply typing `!stats`
