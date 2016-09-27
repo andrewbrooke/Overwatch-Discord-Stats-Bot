@@ -66,7 +66,7 @@ module.exports = (message, callback) => {
         },
         record: {
           display: 'Record',
-          value: statsJSON.GamesWon + '-' + statsJSON.GamesLost + '-' + statsJSON.GamesTied
+          value: statsJSON.GamesWon + ' wins, ' + statsJSON.GamesLost + ' losses, ' + statsJSON.GamesTied + ' ties'
         },
         winrate: {
           display: 'Winrate',
@@ -74,7 +74,7 @@ module.exports = (message, callback) => {
         }
       };
       
-      let statsString = battleTag + ', here is a summary of your statistics: \n\n';
+      let statsString = 'here is a summary of your statistics: \n\n';
       for (key in stats) {
         statsString += stats[key].display + ': ' + stats[key].value + '\n';
       }
