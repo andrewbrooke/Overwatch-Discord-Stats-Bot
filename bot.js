@@ -17,15 +17,15 @@ bot.on('ready', () => {
 
 bot.on('message', message => {
   // Don't reply to bot messages
-  if(message.author.bot) return; 
-  
+  if(message.author.bot) return;
+
   let statsTrigger = '!stats';
   if (message.content.startsWith(statsTrigger)) {
     if (message.content.indexOf('#') > -1) {
       // User sends their BattleTag, send them back some stats
       OverwatchAPI(message.content, (err, data) => {
         if (err) {
-          message.reply(data);
+          message.reply("An error occured :(");
           return console.error(err + ': ' + data);
         }
 
@@ -41,6 +41,6 @@ bot.on('message', message => {
 bot.login(token);
 
 let showHelp = (message) => {
-  const helpText = '\n This bot will retrieve your Overwatch statistics \n Enter "!stats" and your Battle.net BattleTag to receive your stats \n Ex: stats User#1234 \n\n Default options: Region: us, Platform: pc \n To change these options, append your message with the following options \n\n Platform: platform=[platform] \n Options: pc, xbl, psn \n\n Region: region=[region] \n Options: us, eu, kr, cn, global \n\n\n A full request might look like this: !stats User#1234 platform=pc region=eu';
+  const helpText = '\n This bot will retrieve your Overwatch statistics \n Enter "!stats" and your Battle.net BattleTag to receive your stats \n Ex: !stats User#1234 \n\n Default options: Region: us, Platform: pc \n To change these options, append your message with the following options \n\n Platform: platform=[platform] \n Options: pc, xbl, psn \n\n Region: region=[region] \n Options: us, eu, kr, cn, global \n\n\n A full request might look like this: !stats User#1234 platform=pc region=eu';
   message.reply(helpText);
 };

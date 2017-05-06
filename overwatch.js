@@ -1,7 +1,7 @@
 const https = require('https');
 const request = require('request');
 
-const apiBaseUrl = 'https://api.lootbox.eu/';
+const apiBaseUrl = 'https://ow-api.herokuapp.com/';
 const apiType = 'profile';
 
 const platformOptions = ['pc', 'xbl', 'psn'];
@@ -11,17 +11,17 @@ const regionOptions = ['us', 'eu', 'kr', 'cn', 'global'];
 let region;
 
 let buildAPIUrl = (battleTag) => {
-  return apiBaseUrl + platform + '/' + region + '/' + battleTag + '/' + apiType;
+  return apiBaseUrl + apiType + '/' + platform + '/' + region + '/' + battleTag;
 };
 
 module.exports = (message, callback) => {
-  
+
   let msgParts = message.split(' ');
-  
+
   let battleTag = null;
   platform = platformOptions[0];
   region = regionOptions[0];
-  
+
   // Part user's options
   msgParts.forEach( (item) => {
     if (item.indexOf('#') > -1) {
@@ -32,7 +32,7 @@ module.exports = (message, callback) => {
       region = item.split('=').pop();
     }
   });
-  
+
   // Check user's options for validity
   if (!battleTag) {
     return callback('Invalid BattleTag', 'Please provide a valid BattleTag. Ex: User#1234')
@@ -42,7 +42,7 @@ module.exports = (message, callback) => {
     if (regionOptions.indexOf(region) == -1)
       return callback('Invalid Region', 'Region invalid, allowed options are: ' + regionOptions.join(' '));
   }
-  
+
   let url = buildAPIUrl(battleTag);
   console.log('Getting stats from URL: ' + url);
 
@@ -52,29 +52,29 @@ module.exports = (message, callback) => {
       let statsJSON = JSON.parse(body);
       if (statsJSON.statusCode == 404)
         return callback('API Error: ' + statsJSON.statusCode + ' - ' + statsJSON.error, statsJSON.error);
-      
+
       // Stats were returned okay, let's parse them
-      let stats = statsJSON.data;
+      let stats = statsJSON;
       let statLevel = stats.level;
       let statCompRank = stats.competitive.rank;
-      let statCompRecord = stats.games.competitive.wins + 'W ' + stats.games.competitive.lost + 'L';
+      let statCompRecord = stats.games.competitive.wins + 'W';
       let statCompWinrate = (stats.games.competitive.wins / stats.games.competitive.played * 100).toFixed(2) + '%';
       let statCompTime = stats.playtime.competitive;
-      let statQuickWins = stats.games.quick.wins;
-      let statQuickTime = stats.playtime.quick;
-      
+      let statQuickWins = stats.games.quickplay.wins;
+      let statQuickTime = stats.playtime.quickplay;
+
       // Format the string we are going to return to the user
       let statsString = '';
       statsString += '**' + stats.username + '**\n';
       statsString += 'Level: ' + statLevel + ' | Competitive Rank: ' + statCompRank + '\n';
-      statsString += 'Competitive Record: **' + statCompRecord + '** | *' + statCompWinrate + '* winrate\n';
+      statsString += 'Competitive Record (Current season): **' + statCompRecord + '** | *' + statCompWinrate + '* winrate\n';
       statsString += '**' + statQuickWins + '** Quick Play wins\n';
       statsString += '**' + statCompTime + '** Competitive | ' + '**' + statQuickTime + '** Quick Play'
-      
+
       return callback(null, statsString);
     } else {
-      return callback(error, null);
+      return callback(error || response.statusCode, null);
     }
   });
-  
+
 };
